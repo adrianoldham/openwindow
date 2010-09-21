@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>index</title>
+	<script src="../lib/prototype.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../lib/scriptaculous.js?load=effects" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/openwindow.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+	<h2>Open links in new window</h2>
+		<ul>
+		    <li><a href="http://www.apple.com/" target="_blank">Open link in new window</a></li>
+		    <li><a href="http://www.google.com/" class="openwindow">Open link in new window and confirm</a></li>
+		</ul>
+
+    <script type="text/javascript" charset="utf-8">
+        function runTest() {
+            var openWindow = new OpenWindow("a[target]");
+
+            var openWindowConfirm = new OpenWindow("a.openwindow", {
+                windowWidth: 800,
+                windowHeight: 600,
+                windowName: "_google",
+                windowLocation: "yes",
+                windowStatus: "yes",
+                windowMenubar: "no",
+                windowScrollbars: "yes",
+                windowConfirm: "This opens a new window, to return to our site, simply close the window."
+            });
+            
+        }
+        Event.observe(window, "load", runTest);
+    </script>
+</body>
+</html>
