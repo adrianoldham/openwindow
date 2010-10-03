@@ -3,10 +3,13 @@ var OpenWindow = Class.create({
         windowWidth: 1024,
         windowHeight: 768,
         windowName: "_popup",
-        windowLocation: "no",
-        windowStatus: "no",
+        windowLocationbar: "no",
+        windowStatusbar: "no", // ignored by default in firefox
         windowMenubar: "no",
+        windowToolbar: "no",
+        windowPersonalbar: "no",
         windowScrollbars: "yes",
+        windowResizable: "yes", // ignored by many modern browsers
         windowConfirm: false
     },
 
@@ -14,36 +17,37 @@ var OpenWindow = Class.create({
         this.options = Object.extend(Object.extend({ }, this.options), options || { });
         
         this.selector = $$(selector);
-        this.selector.each(function(element) {
+        this.selector.each(function(element, options) {
              this.apply(element, options);
         }.bind(this));
     },
 
     apply: function(element, options) {
         var windowConfirm = this.options.windowConfirm;
-        var windowUrl = element.href;
+        var windowLocation = element.href;
         var windowName = this.options.windowName;
-        var windowParams = 'width=' + this.options.windowWidth +
-                           ',height=' + this.options.windowHeight +
-                           ',location=' + this.options.windowLocation +
-                           ',status=' + this.options.windowStatus +
-                           ',menubar=' + this.options.windowMenubar +
-                           ',scrollbars=' + this.options.windowScrollbars;
+        var windowAttributes = 'width=' + this.options.windowWidth +
+                               ',height=' + this.options.windowHeight +
+                               ',location=' + this.options.windowLocationbar +
+                               ',status=' + this.options.windowStatusbar +
+                               ',menubar=' + this.options.windowMenubar +
+                               ',toolbar=' + this.options.windowToolbar +
+                               ',resizable=' + this.options.windowResizable +
+                               ',scrollbars=' + this.options.windowScrollbars;
 
         element.observe('click', openWindow);
 
-        function openWindow(event, options) {
-            element = event.element();
+        function openWindow(event) {
             if(windowConfirm) {
                 var isConfirmed = confirm(windowConfirm);
                 if(isConfirmed) {
-                    window.open(windowUrl, windowName, windowParams);
+                    window.open(windowLocation, windowName, windowAttributes);
                     event.stop();            
                 } else {
                     event.stop();            
                 }
             } else {
-                window.open(windowUrl, windowName, windowParams);
+                window.open(windowLocation, windowName, windowAttributes);
                 event.stop();
             }
         }
