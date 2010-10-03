@@ -22,12 +22,13 @@ var OpenWindow = Class.create({
         }.bind(this));
 
         this.setupWindow();
-
     },
 
     apply: function(element) {
-        this.windowLocation = element.href;
-        element.observe('click', this.openWindow.bind(this));
+        element.observe('click', function() {
+            this.windowLocation = element.href;
+            this.openWindow(event);
+        }.bind(this));
     },
 
     setupWindow: function() {
