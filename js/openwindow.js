@@ -15,20 +15,16 @@ var OpenWindow = Class.create({
 
     initialize: function(selector, options) {        
         this.options = Object.extend(Object.extend({ }, this.options), options || { });
-        
         this.selector = $$(selector);
         this.selector.each(function(element) {
              this.apply(element);
         }.bind(this));
 
-        this.setupWindow();
+        this.setupWindow();        
     },
 
     apply: function(element) {
-        element.observe('click', function() {
-            this.windowLocation = element.href;
-            this.openWindow(event);
-        }.bind(this));
+        element.observe('click', this.openWindow.bindAsEventListener(this, element));
     },
 
     setupWindow: function() {
@@ -44,18 +40,17 @@ var OpenWindow = Class.create({
                                ',scrollbars=' + this.options.windowScrollbars;
     },
 
-    openWindow: function(event) {
+    openWindow: function(event, element) {
+        this.windowLocation = element.href;
+        
         if(this.windowConfirm) {
             var isConfirmed = confirm(this.windowConfirm);
             if(isConfirmed) {
-                window.open(this.windowLocation, this.windowName, this.windowAttributes);
-                event.stop();            
-            } else {
-                event.stop();            
+                window.open(this.windowLocation, this.windowName, this.windowAttributes);          
             }
         } else {
             window.open(this.windowLocation, this.windowName, this.windowAttributes);
-            event.stop();
         }
+        event.stop();
     }
 });
