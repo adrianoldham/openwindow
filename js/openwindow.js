@@ -17,16 +17,23 @@ var OpenWindow = Class.create({
         this.options = Object.extend(Object.extend({ }, this.options), options || { });
         
         this.selector = $$(selector);
-        this.selector.each(function(element, options) {
-             this.apply(element, options);
+        this.selector.each(function(element) {
+             this.apply(element);
         }.bind(this));
+
+        this.setupWindow();
+
     },
 
-    apply: function(element, options) {
-        var windowConfirm = this.options.windowConfirm;
-        var windowLocation = element.href;
-        var windowName = this.options.windowName;
-        var windowAttributes = 'width=' + this.options.windowWidth +
+    apply: function(element) {
+        this.windowLocation = element.href;
+        element.observe('click', this.openWindow.bind(this));
+    },
+
+    setupWindow: function() {
+        this.windowConfirm = this.options.windowConfirm;
+        this.windowName = this.options.windowName;
+        this.windowAttributes = 'width=' + this.options.windowWidth +
                                ',height=' + this.options.windowHeight +
                                ',location=' + this.options.windowLocationbar +
                                ',status=' + this.options.windowStatusbar +
@@ -34,22 +41,20 @@ var OpenWindow = Class.create({
                                ',toolbar=' + this.options.windowToolbar +
                                ',resizable=' + this.options.windowResizable +
                                ',scrollbars=' + this.options.windowScrollbars;
+    },
 
-        element.observe('click', openWindow);
-
-        function openWindow(event) {
-            if(windowConfirm) {
-                var isConfirmed = confirm(windowConfirm);
-                if(isConfirmed) {
-                    window.open(windowLocation, windowName, windowAttributes);
-                    event.stop();            
-                } else {
-                    event.stop();            
-                }
+    openWindow: function(event) {
+        if(this.windowConfirm) {
+            var isConfirmed = confirm(this.windowConfirm);
+            if(isConfirmed) {
+                window.open(this.windowLocation, this.windowName, this.windowAttributes);
+                event.stop();            
             } else {
-                window.open(windowLocation, windowName, windowAttributes);
-                event.stop();
+                event.stop();            
             }
+        } else {
+            window.open(this.windowLocation, this.windowName, this.windowAttributes);
+            event.stop();
         }
     }
 });
