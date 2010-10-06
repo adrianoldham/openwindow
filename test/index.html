@@ -19,7 +19,9 @@
 
     <script type="text/javascript" charset="utf-8">
         function runTest() {
-            var openWindow = new OpenWindow("a[target]");
+            var openWindow = new OpenWindow("a[target]", {
+                windowCenterOf: "screen"
+            });
 
             var openWindowConfirm = new OpenWindow("a.openwindow", {
                 windowWidth: 800,
@@ -27,7 +29,8 @@
                 windowName: "_google",
                 windowLocationbar: "yes",
                 windowStatusbar: "yes",
-                windowConfirm: "This opens a new window, to return to our site, simply close the window."
+                windowConfirm: "This opens a new window, to return to our site, simply close the window.",
+                windowCenterOf: "window"
             });
             
         }
