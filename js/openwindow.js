@@ -13,7 +13,7 @@ var OpenWindow = Class.create({
         windowCenterOf: null // "window" or "screen"
     },
 
-    initialize: function(selector, options) {        
+    initialize: function(selector, options) {
         this.options = Object.extend(Object.extend({ }, this.options), options || { });
         this.selector = $$(selector);
         this.selector.each(function(element) {
@@ -43,22 +43,7 @@ var OpenWindow = Class.create({
 
     getWindowPosition: function() {
 
-        var windowWidth, windowHeight;
         var windowLeft, windowTop;
-
-        if(Object.isNumber(window.outerWidth)) {
-            // Non-IE
-            windowWidth = window.innerWidth;
-            windowHeight = window.innerHeight;
-        } else if (!Object.isUndefined(document.documentElement) && (!Object.isUndefined(document.documentElement.clientWidth) || !Object.isUndefined(document.documentElement.clientHeight))) {
-            // IE 6+ in 'standards compliant mode'
-            windowWidth = document.documentElement.clientWidth;
-            windowHeight = document.documentElement.clientHeight;
-        } else if (!Object.isUndefined(document.body) && (!Object.isUndefined(document.body.clientWidth) || !Object.isUndefined(document.body.clientHeight))) {
-            // IE 4 compatible
-            windowWidth = document.body.clientWidth;
-            windowHeight = document.body.clientHeight;
-        }
 
         if(Object.isNumber(window.screenX)) {
             // Non-IE
@@ -72,8 +57,8 @@ var OpenWindow = Class.create({
 
         switch (this.options.windowCenterOf) {
             case "window":
-                windowLeft = ((windowWidth - this.options.windowWidth) / 2) + windowLeft;
-                windowTop = ((windowHeight - this.options.windowHeight) / 2) + windowTop;
+                windowLeft = ((document.viewport.getWidth() - this.options.windowWidth) / 2) + windowLeft;
+                windowTop = ((document.viewport.getHeight() - this.options.windowHeight) / 2) + windowTop;
                 break;
 
             case "screen":
